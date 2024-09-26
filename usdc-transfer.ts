@@ -81,7 +81,7 @@ async function getTokenBalance(accountAddress: string, tokenType: string) {
         ) {
           return null;
         }
-        const [address, privateKey] = line.split(",");
+        const [privateKey, address] = line.split(",");
         return {
           "Aptos Address": address,
           "Private key": privateKey,
