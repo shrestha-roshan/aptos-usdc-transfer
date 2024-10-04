@@ -1,10 +1,11 @@
 {
     "compilerOptions": {
       "module": "commonjs",
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "removeComments": true,
       "preserveConstEnums": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "esModuleInterop": true
     },
     "files": [
       "core.ts",

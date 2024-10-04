@@ -3,3 +3,4 @@ package-lock.json
 wallets.csv
 index.txt
 transactions.csv
+.env

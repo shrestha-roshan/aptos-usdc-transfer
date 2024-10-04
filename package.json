@@ -2,6 +2,7 @@
     "name": "usdc-transfer",
     "version": "1.0.0",
     "description": "",
+    "type":"module",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +13,11 @@
     "dependencies": {
         "@aptos-labs/ts-sdk": "^1.27.1",
         "@types/node": "^22.7.2",
+        "dotenv": "^16.4.5",
         "fs": "^0.0.1-security",
+        "https-proxy-agent": "^7.0.5",
+        "node-fetch": "^3.3.2",
+        "tiny-invariant": "^1.3.3",
         "ts-node": "^10.9.2",
         "typescript": "^5.6.2"
     },
