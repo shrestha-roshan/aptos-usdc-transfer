@@ -7,6 +7,7 @@ import {
   generateTransactionPayload,
   generateRawTransaction,
   SimpleTransaction,
+  APTOS_COIN,
 } from "@aptos-labs/ts-sdk";
 import fs from "fs";
 import { callTx } from "./callTx.js";
@@ -18,8 +19,6 @@ const aptosConfig = new AptosConfig({
 });
 
 export const aptos = new Aptos(aptosConfig);
-const COIN_STORE = "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>";
-const USDC = "0x275f508689de8756169d1ee02d889c777de1cebda3a7bbcce63ba8a27c563c6f::tokens::USDC";
 
 async function getTokenBalance(accountAddress, tokenType) {
   try {
@@ -51,11 +50,11 @@ async function getLastIndex() {
 }
 
 async function saveWalletIndex(index) {
-  await writeFile("index-usdc-from-single.txt", index.toString(), { flag: "w" });
+  await writeFile("index-move-from-single.txt", index.toString(), { flag: "w" });
 }
 
 async function saveTransactionToCsv(walletAddress, version) {
-  await writeFile("index-usdc-from-single.csv", `${walletAddress},${version}\n`, { flag: "a" });
+  await writeFile("index-move-from-single.csv", `${walletAddress},${version}\n`, { flag: "a" });
 }
 
 async function transferFunds(amount) {
@@ -81,7 +80,7 @@ async function transferFunds(amount) {
     .filter((wallet) => wallet !== null);
 
   const walletCount = wallets.length;
-  const lastIndex = await getLastIndex();
+  const lastIndex = await getLastIndex() + 1;
 
   console.log(
     `Starting transfer from wallet at index ${lastIndex} to (${wallets[0]["Aptos Address"]})`
@@ -105,7 +104,7 @@ async function transferFunds(amount) {
         address: walletAddress,
       });
 
-      const availableBalance = await getTokenBalance(walletAddress, USDC);
+      const availableBalance = await getTokenBalance(walletAddress, APTOS_COIN);
       console.log(`Available balance: ${availableBalance}`);
 
       if (availableBalance < 100) {
@@ -113,11 +112,12 @@ async function transferFunds(amount) {
         continue;
       }
 
+
       // Build the transaction data
       const transactionData = {
         function: "0x1::aptos_account::transfer_coins",
-        functionArguments: [receiverAddress, (amount * 10 ** 6).toString()],
-        typeArguments: [USDC],
+        functionArguments: [receiverAddress, (amount * 10 ** 8).toString()],
+        typeArguments: [APTOS_COIN],
       };
 
       // Generate the transaction payload
@@ -186,6 +186,6 @@ async function transferFunds(amount) {
   }
 }
 
-transferFunds(0.5)
+transferFunds(0.1)
   .then(() => console.log("Transfer complete"))
   .catch((error) => console.error("Failed to transfer funds:", error));
